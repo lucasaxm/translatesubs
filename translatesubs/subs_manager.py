@@ -63,14 +63,14 @@ class SubsManager:
 
             secondary = SubsManager._style_secondary(secondary, merge, secondary_scale)
 
-            origin_sub.text = f'{main}'
+            origin_sub.text = f'{sub.open_style}{main}{sub.close_style}'
 
     def save_subs(self, subs_out: str):
         self.origin_subs.save(subs_out)
 
     @staticmethod
     def extract_from_video(video_in: str, subs_track: int, subs_out: str) -> bool:
-        operation = ['ffmpeg', '-i', video_in, '-map', f'0:s:{subs_track}', subs_out]
+        operation = ['ffmpeg', '-i', video_in, '-map', f'0:s:{subs_track}', '-c:s text', subs_out]
         logging.debug(f'Extracting subs using {" ".join(operation)}')
         status = subprocess.run(operation)
         return status.returncode == 0
